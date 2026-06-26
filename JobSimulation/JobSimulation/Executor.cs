@@ -60,6 +60,7 @@ public static class Executors
 
     public static void FastExecutor(Job job)
     {
+        
         if (job.Name.Contains("fail-fast", StringComparison.OrdinalIgnoreCase))
         {
             throw new Exception("$\"Job '{job.Name}' failed intentionally (fail-fast)");
