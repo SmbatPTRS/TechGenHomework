@@ -26,7 +26,6 @@ class Program
         
         // ============= 2nd Exercice Implementation ======================================
         // List<int> myList = new List<int>() { 1, 2, 3, 4 };
-        // var step1 = Filter.filter(myList,Filter.IsEaven);
         //
         // var step2 = Filter.Project(step1, Filter.Transform);
         //
