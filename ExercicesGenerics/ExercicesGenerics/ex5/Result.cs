@@ -16,7 +16,8 @@ public sealed class Result<T>
         ErrorMessage = errorMessage ?? "no error";
         Attempts = attempts;
     }
-
+    
+    
     public static Result<T> Execute<T>(Func<T> operation, int maxAttempts, Func<Exception, bool>? shouldRetry = null)
     {
         int attempts = 0;

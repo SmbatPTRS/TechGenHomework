@@ -1,39 +1,36 @@
 ﻿namespace ExercicesGenerics.ex2;
 
-public class Filter
+public class Filter<T>
 {
-    public static List<T> filter<T>(List<T> source, Predicate<T> predicate)
+    public static IEnumerable<T> filter(IEnumerable<T> source, Predicate<T> predicate)
     {
-        List<T> res = new List<T>();
         foreach (var i in source)
         {
-            bool? suffice = predicate?.Invoke(i) ?? false;
-            if (suffice.Value)
+            if (predicate(i))
             {
-                res.Add(i);
+                yield return i;
             }
         }
-        return res;
     }
 
-    public static bool IsEaven(int item)
+    public static bool isEaven(int item)
     {
-        return (item % 2) == 0;
+        return item % 2 == 0;
     }
-
-    public static List<TOut> Project<TIn, TOut>(List<TIn> input, Func<TIn, TOut> transformation)
-    {
-        var result = new List<TOut>();
-        foreach (var i in input)
-        {
-            result.Add(transformation(i));
-        }
-        return result;
-    }
-
-    public static string Transform(int item)
+    
+    public static string transform(int item)
     {
         return $"N{item}";
     }
-    
+
+    public static IEnumerable<TOut> project<TIn, TOut>(IEnumerable<TIn> source, Func<TIn, TOut> func)
+    {
+        foreach (var i in source)
+        {
+            if (func != null)
+            {
+                yield return func(i);
+            }
+        }
+    }
 }
