@@ -44,25 +44,25 @@ class Program
         
         
         // ============= 4th Exercice =====================================================
-        Product p1 = new Product("CocaCola", 2);
-        Product p2 = new Product("Pepsi", 3);
-        Product p3 = new Product("NoteBookLm", 4);
-        Product p4 = new Product("Football", 5);
-        Product p5 = new Product("Parachutespecial", 6);
-        
-        Comparer1 comparer = new Comparer1();
-        TopNBuffer<Product> buffer = new TopNBuffer<Product>(3, comparer);
-        buffer.Add(p1);
-        buffer.Add(p2);
-        buffer.Add(p3);
-        buffer.Add(p4);
-        buffer.Add(p5);
-
-        Console.WriteLine("Top 3 products by longest name:");
-        foreach (var p in buffer.Snapshot())
-        {
-            Console.WriteLine($"  {p} — name length: {p.Name.Length}");
-        }     
+        // Product p1 = new Product("CocaCola", 2);
+        // Product p2 = new Product("Pepsi", 3);
+        // Product p3 = new Product("NoteBookLm", 4);
+        // Product p4 = new Product("Football", 5);
+        // Product p5 = new Product("Parachutespecial", 6);
+        //
+        // Comparer1 comparer = new Comparer1();
+        // TopNBuffer<Product> buffer = new TopNBuffer<Product>(3, comparer);
+        // buffer.Add(p1);
+        // buffer.Add(p2);
+        // buffer.Add(p3);
+        // buffer.Add(p4);
+        // buffer.Add(p5);
+        //
+        // Console.WriteLine("Top 3 products by longest name:");
+        // foreach (var p in buffer.Snapshot())
+        // {
+        //     Console.WriteLine($"  {p} — name length: {p.Name.Length}");
+        // }     
         
         //===================================================================================
 
