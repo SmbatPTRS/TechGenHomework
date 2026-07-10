@@ -12,6 +12,9 @@ class Program
         //Ex2.Main2();
         
         //Exercice 3 implementation
-        Ex3.Main3();
+        //Ex3.Main3();
+        
+        //Exercice 4 implementation
+        Ex4.Main4();
     }
 }
