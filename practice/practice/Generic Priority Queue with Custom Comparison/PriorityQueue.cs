@@ -10,12 +10,22 @@ namespace practice.Generic_Priority_Queue_with_Custom_Comparison;
 // and turns it into an object of Comparer<T>, a class which implements IComparer<T> interface!
 
 
-public class PriorityQueue<T>
+public class PriorityQueue<T> : IEnumerable<T>  
 {
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return priorityQueue.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
     // our code basically functions via this _comparer
     private IComparer<T> _comparer;
-    
-    private readonly List<T> priorityQueue;
+
+    private readonly List<T> priorityQueue = new List<T>();
 
     public PriorityQueue()
     {
@@ -49,8 +59,6 @@ public class PriorityQueue<T>
 
         int index = 0;
     
-        // FIX 2: Removed the outer 'for' loop. You only need one search loop 
-        // to find the target position where your new item belongs.
         while (index < priorityQueue.Count)
         {
             // Keep moving right as long as our new item has a lower priority
@@ -87,5 +95,17 @@ public class PriorityQueue<T>
     }
 
 
+    public IEnumerable<T> GetAll()
+    {
+        return priorityQueue;
+    }
+    
+}
 
+public class MyComparer : IComparer<MyTask>
+{
+    public int Compare(MyTask x, MyTask y)
+    {
+        return x.Name.Length.CompareTo(y.Name.Length);
+    }
 }
