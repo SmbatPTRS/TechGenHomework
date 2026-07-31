@@ -26,30 +26,14 @@ public class OrderCorrecter
             return null;
         }
         
-         
-        MethodInfo? computeSubtotal     = type.GetMethod("ComputeSubtotal", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? countUnits          = type.GetMethod("CountUnits", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? applyVolumeDiscount = type.GetMethod("ApplyVolumeDiscount", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? applyLoyaltyDiscount= type.GetMethod("ApplyLoyaltyDiscount", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? applyCoupon         = type.GetMethod("ApplyCoupon", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? applyVat            = type.GetMethod("ApplyVat", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? roundMoney          = type.GetMethod("RoundMoney", BindingFlags.NonPublic | BindingFlags.Static);
-
-        if (computeSubtotal == null || countUnits == null || applyVolumeDiscount == null ||
-            applyLoyaltyDiscount == null || applyCoupon == null || applyVat == null || roundMoney == null)
-        {
-            Console.WriteLine("Failed to load one or more private methods.");
-            return null;
-        }
         MethodInfo? method1 = type.GetMethod("ComputeSubtotal", BindingFlags.NonPublic | BindingFlags.Instance);
         MethodInfo? method2 = type.GetMethod("CountUnits", BindingFlags.NonPublic | BindingFlags.Instance);
         MethodInfo? method3 = type.GetMethod("ApplyVolumeDiscount", BindingFlags.NonPublic | BindingFlags.Instance);
         MethodInfo? method4 = type.GetMethod("ApplyLoyaltyDiscount", BindingFlags.NonPublic | BindingFlags.Instance);
         MethodInfo? method5 = type.GetMethod("ApplyCoupon", BindingFlags.NonPublic | BindingFlags.Instance);
         MethodInfo? method6 = type.GetMethod("ApplyVat", BindingFlags.NonPublic | BindingFlags.Instance);
-        MethodInfo? method7 = type.GetMethod("RoundMoney", BindingFlags.NonPublic | BindingFlags.Static); // Note: Static!
+        MethodInfo? method7 = type.GetMethod("RoundMoney", BindingFlags.NonPublic | BindingFlags.Static); 
 
-        // --- Execute Calculations Step-by-Step ---
 
         object subtotal = method1.Invoke(obj, new object[] { input.Lines });
 
