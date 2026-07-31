@@ -4,13 +4,12 @@ This repository contains my C# programming assignments and exercises completed d
 
 ## Topics Covered
 
-- Variables and Data Types
-- Control Flow
-- Methods
-- Arrays and Collections
-- Object-Oriented Programming
+- Reflection
+- Design Patterns
 - Generics
 - Delegates and Lambdas
+- Object-Oriented Programming
+- Methods
 - LINQ
 - Exception Handling
 - Interfaces and Abstraction
