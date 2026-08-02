@@ -4,7 +4,49 @@ public sealed class DIContainer
 {
     //Actual container of registries, if someone asks for type x , build type y
     //Type is a runtime C# class, it represents metadata about class, interface or struct
-    Dictionary<Type,Type> _registrations = new  Dictionary<Type,Type>();
-    
-    
+    Dictionary<Type,Registration> _registrations = new  Dictionary<Type,Registration>();
+
+    public void Register(Type serviceType, Type implementationType, LifeTime lifetime)
+    {
+        Registration registration = new Registration();
+        registration.LifeTime=lifetime;
+        registration.ImplementationType = implementationType;
+        
+        _registrations[serviceType] = registration;
+    }
+
+    public object? Resolve(Type serviceType)
+    {
+        //getting the corresponding Registration for a given service type
+        Registration registration = _registrations[serviceType];
+
+        if (registration.LifeTime == LifeTime.Singleton && registration.Instance != null)
+        {
+            return registration.Instance;
+        }
+
+        //taking the first constructor of the type we need to build
+        ConstructorInfo constructorInfo = registration.ImplementationType.GetConstructors()[0];
+
+        
+        //taking the parameters from the ctor
+        ParameterInfo[] parameterInfos = constructorInfo.GetParameters();
+
+        object[] arguments = new object[parameterInfos.Length];
+
+        for (int i = 0; i < parameterInfos.Length; i++)
+        {
+            arguments[i] = Resolve(parameterInfos[i].ParameterType);
+        }
+        
+        object instance = constructorInfo.Invoke(arguments);
+        
+        //if singleton, keep it for later usage
+        if (registration.LifeTime == LifeTime.Singleton)
+        {
+            registration.Instance = instance;
+        }
+        return instance;
+    }
+
 }
