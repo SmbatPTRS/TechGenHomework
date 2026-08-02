@@ -1,4 +1,6 @@
-﻿public enum LifeTime
+﻿namespace DIContainer;
+
+public enum LifeTime
 {
     Transient,
     Singleton,

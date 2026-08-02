@@ -7,4 +7,6 @@ public class Registration
     
     // if we need to reuse something, Singleton case
     public object? Instance { get; set; }
+    
+    public Func<DIContainer,object> Factory { get; set; }
 }

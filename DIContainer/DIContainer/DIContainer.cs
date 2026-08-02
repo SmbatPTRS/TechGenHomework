@@ -14,39 +14,58 @@ public sealed class DIContainer
         
         _registrations[serviceType] = registration;
     }
+    
+    
+    public void RegisterFactory(Type serviceType, Func<DIContainer, object> factory, LifeTime lifetime)
+    {
+        Registration registration = new Registration();
+        registration.LifeTime = lifetime;
+        registration.Factory = factory;
+        _registrations[serviceType] = registration;
+    }
 
     public object? Resolve(Type serviceType)
     {
         //getting the corresponding Registration for a given service type
         Registration registration = _registrations[serviceType];
 
+        
         if (registration.LifeTime == LifeTime.Singleton && registration.Instance != null)
         {
             return registration.Instance;
         }
 
-        //taking the first constructor of the type we need to build
-        ConstructorInfo constructorInfo = registration.ImplementationType.GetConstructors()[0];
+        object instance;
 
-        
-        //taking the parameters from the ctor
-        ParameterInfo[] parameterInfos = constructorInfo.GetParameters();
-
-        object[] arguments = new object[parameterInfos.Length];
-
-        for (int i = 0; i < parameterInfos.Length; i++)
+        if (registration.Factory != null)
         {
-            arguments[i] = Resolve(parameterInfos[i].ParameterType);
+            // Hand the container itself ("this") to the custom function,
+            // so it can resolve its own sub-dependencies if it needs to.
+            instance = registration.Factory(this);
         }
+        else
+        {
+            //taking the first constructor of the type we need to build
+            ConstructorInfo constructorInfo = registration.ImplementationType.GetConstructors()[0];
+
         
-        object instance = constructorInfo.Invoke(arguments);
-        
-        //if singleton, keep it for later usage
+            //taking the parameters from the ctor
+            ParameterInfo[] parameterInfos = constructorInfo.GetParameters();
+
+            object[] arguments = new object[parameterInfos.Length];
+
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                arguments[i] = Resolve(parameterInfos[i].ParameterType);
+            }
+            instance = constructorInfo.Invoke(arguments);
+            
+        }
+        //if singleton, keep it for later usage     
         if (registration.LifeTime == LifeTime.Singleton)
         {
             registration.Instance = instance;
         }
         return instance;
     }
-
 }
