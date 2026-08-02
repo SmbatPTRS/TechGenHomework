@@ -6,11 +6,17 @@ public sealed class DIContainer
     //Type is a runtime C# class, it represents metadata about class, interface or struct
     Dictionary<Type,Registration> _registrations = new  Dictionary<Type,Registration>();
 
+
+    //To not allow illegal registrations such as ->
+    //container.Register(typeof(IDBConnection), typeof(OrderRepository)
+    public void Register<TService, TImplementation>(LifeTime lifeTime) where TImplementation : TService
+    {
+        Register(typeof(TService), typeof(TImplementation),lifeTime);
+    }
+
     public void Register(Type serviceType, Type implementationType, LifeTime lifetime)
     {
-        Registration registration = new Registration();
-        registration.LifeTime=lifetime;
-        registration.ImplementationType = implementationType;
+        Registration registration = Registration.ForType(implementationType,lifetime);
         
         _registrations[serviceType] = registration;
     }
@@ -18,10 +24,16 @@ public sealed class DIContainer
     
     public void RegisterFactory(Type serviceType, Func<DIContainer, object> factory, LifeTime lifetime)
     {
-        Registration registration = new Registration();
-        registration.LifeTime = lifetime;
-        registration.Factory = factory;
+        Registration registration = Registration.ForFactory(factory, lifetime);
         _registrations[serviceType] = registration;
+    }
+
+
+    public T Resolve<T>()
+    {
+        object result = Resolve(typeof(T));
+        
+        return (T)result;
     }
 
     public object? Resolve(Type serviceType)
