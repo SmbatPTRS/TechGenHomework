@@ -1,5 +1,10 @@
 ﻿namespace DIContainer;
 
+public class NullLogger : ILogger
+{
+    public void Log(string message)
+    {}
+}
 
 public class ConsoleLogger : ILogger
 {
@@ -15,12 +20,32 @@ public class SqlConnectionFactory : IDbConnectionFactory
     private readonly string _connectionString;
     private readonly ILogger _logger;
 
+    
+    //--- Several Constructors here to fix the resolving logic gap -----//
+    
+    // Constructor 1
     public SqlConnectionFactory(string connectionString, ILogger logger)
     {
         _connectionString = connectionString;
         _logger = logger;
         _logger.Log("SqlConnectionFactory created with " + connectionString);
     }
+    
+    // Constructor 2
+    [InjectionConstructor]
+    public SqlConnectionFactory(string connectionString)
+    {
+        _connectionString = connectionString;
+        _logger = new NullLogger(); // does nothing
+    }
+    
+    // Constructor 3
+    public SqlConnectionFactory()
+    {
+        _connectionString = "default-connection";
+        _logger = new NullLogger();
+    }
+    
 }
 
 public class OrderRepository : IOrderRepository

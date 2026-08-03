@@ -12,6 +12,7 @@ public sealed class DIContainer
     public void Register<TService, TImplementation>(LifeTime lifeTime) where TImplementation : TService
     {
         Register(typeof(TService), typeof(TImplementation),lifeTime);
+        
     }
 
     public void Register(Type serviceType, Type implementationType, LifeTime lifetime)
@@ -57,8 +58,8 @@ public sealed class DIContainer
         }
         else
         {
-            //taking the first constructor of the type we need to build
-            ConstructorInfo constructorInfo = registration.ImplementationType.GetConstructors()[0];
+            //taking the marked Consturctor or the one with most parameters
+            ConstructorInfo constructorInfo = SelectConstructor(registration.ImplementationType);
 
         
             //taking the parameters from the ctor
@@ -79,5 +80,58 @@ public sealed class DIContainer
             registration.Instance = instance;
         }
         return instance;
+    }
+
+
+
+    // Logic to select the constructor, marked by attribute or with most parameters
+    private ConstructorInfo SelectConstructor(Type implementationType)
+    {
+        ConstructorInfo[] constructors = implementationType.GetConstructors();
+
+        if (constructors.Length == 0)
+        {
+            throw new InvalidOperationException($"{implementationType.Name} doesnt have public constructor");
+        }
+        
+        
+        ConstructorInfo? marked =  null;
+
+        for (int i = 0; i < constructors.Length; i++)
+        {
+            ConstructorInfo current = constructors[i];
+
+            InjectionConstructorAttribute attribute = current.GetCustomAttribute<InjectionConstructorAttribute>();
+
+            if (attribute != null)
+            {
+                marked = current;
+                break;
+            }
+        }
+
+        if (marked != null)
+        {
+            return marked;
+        }
+
+        ConstructorInfo bestSoFar = constructors[0];
+
+        int bestParameterNumber = bestSoFar.GetParameters().Length;
+
+        for (int i = 1; i < constructors.Length; i++)
+        {
+            ConstructorInfo current  = constructors[i];
+            int currentParameterCount = current.GetParameters().Length;
+
+            if (currentParameterCount > bestParameterNumber)
+            {
+                bestSoFar = current;
+                bestParameterNumber = currentParameterCount;
+            }
+            
+        }
+        return bestSoFar;
+        
     }
 }

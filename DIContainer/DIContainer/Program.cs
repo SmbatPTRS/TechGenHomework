@@ -13,6 +13,8 @@ class Program
         
         container.Register(typeof(ILogger),typeof(ConsoleLogger),LifeTime.Transient);
         
+ 
+        
          //registrating via RegisterFactory
          container.RegisterFactory(typeof(IDbConnectionFactory), delegate(DIContainer e)
          {
