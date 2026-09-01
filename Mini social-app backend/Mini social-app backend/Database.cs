@@ -21,7 +21,7 @@ public class Database
         }.ConnectionString;
     }
 
-    public SqliteConnection GetConnection()
+    public  SqliteConnection GetConnection()
     {
         var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -48,6 +48,22 @@ public class Database
         cmd.ExecuteNonQuery();
     }
     
+    public void EnsureFriendshipTableExists()
+    {
+        using var conn = GetConnection();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+        CREATE TABLE IF NOT EXISTS Friendship(
+            FriendshipId INTEGER PRIMARY KEY AUTOINCREMENT,
+            UserId1 INTEGER NOT NULL,
+            UserId2 INTEGER NOT NULL,
+            CreatedAt TEXT NOT NULL,
+            FOREIGN KEY(UserId1) REFERENCES Users(UserId),
+            FOREIGN KEY(UserId2) REFERENCES Users(UserId)
+        );
+        ";
+        cmd.ExecuteNonQuery();
+    }
   
     
     
