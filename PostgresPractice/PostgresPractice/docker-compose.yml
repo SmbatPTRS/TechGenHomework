@@ -1,0 +1,16 @@
+services:
+  app-pg:
+    image: postgres:16
+    container_name: app-pg
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: AppPgDb
+    ports:
+      - "5433:5432"
+    volumes:
+      - apppg-pgdata:/var/lib/postgresql/data
+
+volumes:
+  apppg-pgdata:
+  
