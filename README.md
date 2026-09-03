@@ -9,12 +9,11 @@ This repository contains my C# programming assignments and exercises completed d
 - Generics
 - Delegates and Lambdas
 - Object-Oriented Programming
-- Methods
+- Docker
 - LINQ
 - Exception Handling
 - Interfaces and Abstraction
 - Data Structures
-- Design Patterns
 - And more...
 
 ## Repository Structure
