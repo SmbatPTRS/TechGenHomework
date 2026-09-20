@@ -39,7 +39,6 @@ public class FriendReopsitory
             }
         }
 
-        // Check 3: are they already friends?
         using (IDbCommand checkCmd = conn.CreateCommand())
         {
             checkCmd.Transaction = transaction;

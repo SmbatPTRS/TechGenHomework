@@ -61,7 +61,7 @@ public class UserInventory
                 SELECT Salt, PasswordHash FROM Users WHERE Username = @username;
             ";
             command.Parameters.AddWithValue("@username", username);
-            
+             
                   // returns SqliteDataReader object
                   using (var reader = command.ExecuteReader())
                   {
