@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# DATABASE SECRETS 
+WebApplication2/WebApplication2/appsettings.Development.json
