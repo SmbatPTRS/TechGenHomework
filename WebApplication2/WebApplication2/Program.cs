@@ -1,4 +1,4 @@
-using WebApplication2.Middleware;
+using WebApplication2.Middlewares;
 using WebApplication2.Middlewares;
 using WebApplication2.Services;
 
@@ -34,6 +34,9 @@ public class Program
         
         builder.Services.AddEndpointsApiExplorer();
         
+        // NEW AUTHENTIFICATION SERVICE, ONE PER REQUEST
+        builder.Services.AddScoped<IAuthService, AuthService>();
+
         
         var app = builder.Build();
         app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -52,7 +55,7 @@ public class Program
         app.UseHttpsRedirection();
 
         
-        app.UseMiddleware<ApiKeyMiddleware>();
+        //app.UseMiddleware<ApiKeyMiddleware>();
 
         //It scans your assembly for classes with [Route]/[ApiController] and
         //adds them into the routing pipeline, 
