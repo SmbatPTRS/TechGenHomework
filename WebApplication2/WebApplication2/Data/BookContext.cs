@@ -14,6 +14,8 @@ public class BookContext : DbContext
     }
     public DbSet<Book> Books { get; set; } = null!;
 
+    public DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Book>(entity =>
@@ -31,7 +33,19 @@ public class BookContext : DbContext
                 .HasMaxLength(200);
             
             // for the "create if it doesn't exist yet" rule.
+            
             entity.HasIndex(b => b.Title).IsUnique();
+            
+            entity.HasOne(b => b.Owner)              // each book has ONE owner...
+                .WithMany(u => u.Books)            // ...and each user has MANY books
+                .HasForeignKey(b => b.OwnerId)     // the sticker column is OwnerId
+                .OnDelete(DeleteBehavior.Restrict); 
+            
         });
+        
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+
     }
 }
