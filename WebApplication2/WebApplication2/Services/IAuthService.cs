@@ -6,4 +6,7 @@ public interface IAuthService
 {
     // Returns the new user, or null if the username is already taken.
     Task<User?> RegisterAsync(string username, string password);
+    
+    Task<User?> ValidateCredentialsAsync(string username, string password);
+
 }

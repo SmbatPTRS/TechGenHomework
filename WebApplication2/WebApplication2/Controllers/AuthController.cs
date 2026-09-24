@@ -34,4 +34,19 @@ public class AuthController : ControllerBase
         // so we skip the Location header for now.
         return StatusCode(StatusCodes.Status201Created, response);
     }
+    
+    [HttpPost("login")]
+    public async Task<ActionResult<UserResponseDto>> Login(AuthRequestDto request)
+    {
+        var user = await _authService.ValidateCredentialsAsync(request.Username, request.Password);
+
+        // null covers BOTH "no such user" and "wrong password".
+        // We deliberately give the same answer for both.
+        if (user is null)
+        {
+            return Unauthorized(new { status = 401, error = "Invalid username or password." });
+        }
+
+        return Ok(new UserResponseDto { Id = user.Id, Username = user.Username });
+    }
 }

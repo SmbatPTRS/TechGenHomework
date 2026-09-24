@@ -39,5 +39,25 @@ public class AuthService : IAuthService
         // After saving, Postgres has generated user.Id and EF filled it in.
         return user;
     }
-    
+
+
+    public async Task<User?> ValidateCredentialsAsync(string username, string password)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        if (user is null)
+        {
+            return null; // no such username
+        }
+        
+        
+        var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+        if (result == PasswordVerificationResult.Failed)
+        {
+            return null; // wrong password
+        }
+
+        return user; // credentials are correct
+    }
+
 }
